@@ -1,0 +1,52 @@
+body{
+    /* background: url('images/idk.jpg'); */
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-size: cover;
+    background-attachment: fixed;
+    width: auto;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.nav {
+    position: absolute;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.container1 {
+    display: flex;
+    justify-content: center;
+}
+
+table {
+    border-collapse: collapse;
+    width: 70%;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: center;
+    background-color: whitesmoke;
+}
+
+tr{
+    border: 1px solid black;
+}
+
+th {
+    background-color: rgb(222, 4, 4);
+}
+
+.titel {
+    display: flex;
+    justify-content: center;
+}
