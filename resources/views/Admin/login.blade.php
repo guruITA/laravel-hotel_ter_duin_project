@@ -2,35 +2,42 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 </head>
 
 <body>
 
+  @if (!session('username'))
+  <form action="{{ url('/login/admin/submit') }}" method="post">
+    @csrf
+    <label for="username_medewerker">Username:</label>
+    <input type="text" name="username_medewerker" required>
 
-    <form action="admin/login/submit" method="post">
+    <label for="password_medewerker">Password:</label>
+    <input type="password" name="password_medewerker" required>
 
-        @csrf
+    <button type="submit">Login</button>
+    @if (session('success'))
+    <div class="alert alert-success">
+      {{ session('success') }}
+    </div>
+    @endif
 
-        <div>
-            <input type="text" name="username_medewerker" placeholder="username" required>
-        </div>
-        <br>
-        <div>
-            <input type="password" name="password_medewerker" placeholder="password" required>
-        </div>
-        <br>
-        <button type="submit">Inloggen</button>
-        @if(isset($error))
-        <div>
-            {{ $error }}
-        </div>
-        @endif
-        <a href="{{ url('register/') }}">Register</a>
-    </form>
+    @if(isset($error))
+    <div>
+      {{ $error }}
+    </div>
+    @endif  
+    <a href="{{ url('register/') }}">Register</a>
+  </form>
+  @else
+  <h1>Welcome, {{ session('username') }}</h1>
+  @endif
+
 </body>
 
 </html>

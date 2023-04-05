@@ -9,11 +9,16 @@
 </head>
 
 <body>
-    <h1>{{ $res_nr }}</h1>
-    <h1>{{ $klant_id }}</h1>
-    <h1>{{ $van }}</h1>
-    <h1>{{ $tot }}</h1>
-    <h1>{{ $id_kamer }}</h1>
+
+    @if(session('message'))
+    <span class="error">{{ session('message') }}</span>
+    @endif
+
+    <h1 name="res_nr">{{ $res_nr }}</h1>
+    <h1 name="klant_id">{{ $klant_id }}</h1>
+    <h1 name="van">{{ $van }}</h1>
+    <h1 name="tot">{{ $tot }}</h1>
+    <h1 name="id_kamer">{{ $id_kamer }}</h1>
 
 </body>
 

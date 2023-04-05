@@ -16,16 +16,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-// inloggen
-Route::view('/login', '/admin/login');
-Route::post('/admin/login/submit', [AdminController::class,'login']);
+    // inloggen
+    Route::view('/login', '/admin/login')->name('login');
+    Route::post('/login/admin/submit', [AdminController::class,'login']);
+    Route::get('/logout', [AdminController::class,'logout']);
 
-//registeren
-Route::view('/register', '/Admin/registreren');
-Route::post('/admin/register/submit', [AdminController::class,'register']);
+    //registeren
+    Route::view('/register', '/Admin/registreren');
+    Route::post('/admin/register/submit', [AdminController::class,'register']);
 
-//admin main
-Route::get('/admin', [AdminController::class,'admin']);
+    //admin main
+    Route::group(['middleware' => ['checkLogin']], function () {
+        Route::get('/admin', [AdminController::class,'admin'])->name('admin');
+        // other admin routes
+    });
 
 //om 1 bestelling te zien die jij wilt
 Route::get('/admin/show/{id}', [AdminController::class,'ShowBestelling']);
@@ -52,10 +56,11 @@ Route::get('/admin/insertKamer/delete/{id}', [AdminController::class,'delete_kam
 
 
 //Klanten
+Route::get('/klant/selectDate', [KlantController::class,'selectDate']);
+
 Route::get('/klant/insertBestelling ', [KlantController::class,'showInsertForm']);
 Route::post('/klant/insertBestelling/submit', [KlantController::class,'insertKlant']);
 
-Route::get('/klant/selectDate', [KlantController::class,'selectDate']);
 Route::get('/klant/kamer_overzicht', [KlantController::class,'show_kamers']);
 
 Route::get('/klant/factuur', [KlantController::class,'factuur']);

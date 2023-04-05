@@ -16,6 +16,9 @@
         <h3>{{$kamer->omschrijving_kamer}}</h3>
     </div>
     @endforeach
+    @if(session('message'))
+    <div>{{ session('message') }}</div>
+    @endif
 
 </body>
 

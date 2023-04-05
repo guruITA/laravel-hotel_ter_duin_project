@@ -12,7 +12,7 @@ class AdminController extends Controller
     {
 
         DB::table('registreren-medewerker')
-            ->insert(['username_medewerker' => $req->username_medewerker, 'password_medewerker' => password_hash($req->password_medewerker, PASSWORD_DEFAULT)]);
+            ->insert(['username_medewerker' => $req->input('username_medewerker'), 'password_medewerker' => password_hash($req->input('password_medewerker'), PASSWORD_DEFAULT)]);
         return redirect('/login');
     }
 
@@ -27,17 +27,34 @@ class AdminController extends Controller
         foreach ($logins as $login) {
 
             if (password_verify($req->password_medewerker, $login->password_medewerker)) {
-                return redirect('admin');
+                session(['username' => $req->username_medewerker]);
+                if(!$req->session()->has('username')) {
+                    return redirect('/login');
+                }
+                return redirect('/admin');
             }
         }
 
         $error = 'Username or password is incorrect.';
-
+        
         return view('/Admin/login', ['error' => $error]);
     }
 
-    public function admin()
+    public function logout(Request $request)
     {
+        $request->session()->forget('username');
+        $request->session()->regenerate();
+    
+        return redirect('/login')->with('success', 'You have been logged out.');
+    }
+
+    public function admin(Request $request)
+    {
+    
+        if(!$request->session()->has('username')) {
+            return redirect('/login');
+        }
+    
         $bestelling_klant = DB::table('reservering')
             ->join('kamer', 'reservering.kamer', '=', 'kamer.id_kamer')
             ->join('klanten', 'reservering.klant', '=', 'klanten.id_klant')
@@ -58,12 +75,12 @@ class AdminController extends Controller
     public function updateShowBestelling($id_bestelling)
     {
         $show_bestelling_klant = DB::table('reservering')
-            ->where(['id_bestelling'=>  $id_bestelling])
+            ->where(['id_bestelling' =>  $id_bestelling])
             ->join('kamer', 'reservering.kamer', '=', 'kamer.id_kamer')
             ->join('klanten', 'reservering.klant', '=', 'klanten.id_klant')
             ->get();
         $kamer = DB::table('kamer')->get();
-        return view('/Admin/updateBestelling', ['show_bestelling_klant' => $show_bestelling_klant], ['kamer' => $kamer]);
+        return view('/Admin/updateBestelling', ['show_bestelling_klant' => $show_bestelling_klant, 'kamer' => $kamer]);
     }
 
     public function updateBestelling(Request $req)
@@ -128,7 +145,7 @@ class AdminController extends Controller
     {
         $referenced_by = DB::table('reservering')
             ->join('kamer', 'reservering.kamer', '=', 'kamer.id_kamer')
-            ->where(['kamer'=> $id_kamer])
+            ->where(['kamer' => $id_kamer])
             ->get();
 
         if ($referenced_by->isNotEmpty()) {

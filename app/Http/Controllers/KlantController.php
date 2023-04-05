@@ -47,7 +47,7 @@ class KlantController extends Controller
             })
             ->get();
 
-        return view('/klant/kamer_overzicht', ['show_kamers' => $show_kamers], ['van' => $van, 'tot' => $tot]);
+        return view('/klant/kamer_overzicht', ['show_kamers' => $show_kamers, 'van' => $van, 'tot' => $tot]);
     }
 
     public function showInsertForm(Request $req)
@@ -63,8 +63,26 @@ class KlantController extends Controller
     {
 
         $id_kamer = $req->id_kamer;
-        $van = $req->van;
-        $tot = $req->tot;
+        $van = date('Y-m-d H:i:s', strtotime($req->van));
+        $tot = date('Y-m-d H:i:s', strtotime($req->tot));
+
+        // Check if there are any existing reservations for the same room during the same time period
+        $existingReservation = DB::table('reservering')
+            ->where('kamer', $id_kamer)
+            ->where(function ($query) use ($van, $tot) {
+                $query->whereBetween('van', [$van, $tot])
+                    ->orWhereBetween('tot', [$van, $tot])
+                    ->orWhere(function ($query) use ($van, $tot) {
+                        $query->where('van', '<', $van)
+                            ->where('tot', '>', $tot);
+                    });
+            })
+            ->exists();
+
+        if ($existingReservation) {
+            // Display an error message or redirect to an error page
+            return redirect("/klant/factuur")->with('message', 'This room is already reserved for the selected time period');
+        }
 
         $email = DB::table('klanten')->where(['email' => $req->email])->exists();
 
@@ -90,7 +108,7 @@ class KlantController extends Controller
         $id_kamer = $req->id_kamer;
 
         return view('/klant/factuur', ['res_nr' => $res_nr, 'klant_id' => $klant_id, 'van' => $van, 'tot' => $tot, 'id_kamer' => $id_kamer]);
-    }
+    }   
 }
 
 // $prijs = DB::table('kamers')
