@@ -20,6 +20,11 @@
     <label for="password_medewerker">Password:</label>
     <input type="password" name="password_medewerker" required>
 
+
+
+
+
+    
     <button type="submit">Login</button>
     @if (session('success'))
     <div class="alert alert-success">
