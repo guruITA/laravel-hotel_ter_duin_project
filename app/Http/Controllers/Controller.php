@@ -3,11 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Fou
 
-class Controller extends BaseController
+
+
+ndation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\R
+
+
+
+
+
+
+outing\Controller as BaseController;
+
+class Contro
+
+ller extends BaseCon
+
+
+troller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }
