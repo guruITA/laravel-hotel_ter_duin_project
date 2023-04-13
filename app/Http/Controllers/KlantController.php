@@ -26,6 +26,7 @@ class KlantController extends Controller
             }
         }
 
+        
         return view('/klant/selectDate');
     }
 
