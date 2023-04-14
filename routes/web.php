@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
     // inloggen
     Route::view('/login', '/admin/login')->name('login');
-    Route::post('/login/admin/submit', [AdminController::class,'login']);
+    Route::post('/login/submit', [AdminController::class,'login']);
     Route::get('/logout', [AdminController::class,'logout']);
 
     //registeren
@@ -61,10 +61,10 @@ Route::get('/admin/insertKamer/delete/{id}', [AdminController::class,'delete_kam
 //Klanten
 Route::get('/klant/selectDate', [KlantController::class,'selectDate']);
 
+Route::get('/klant/kamer_overzicht', [KlantController::class,'show_kamers']);
+
 Route::get('/klant/insertBestelling ', [KlantController::class,'showInsertForm']);
 Route::post('/klant/insertBestelling/submit', [KlantController::class,'insertKlant']);
-
-Route::get('/klant/kamer_overzicht', [KlantController::class,'show_kamers']);
 
 Route::get('/klant/factuur', [KlantController::class,'factuur']);
 

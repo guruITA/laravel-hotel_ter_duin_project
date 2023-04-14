@@ -16,7 +16,7 @@
         @csrf
 
         <div>
-            <label for="van">Welke datum en tij wilt u de kamer boeken</label>
+            <label for="van">Welke datum en tijd wilt u de kamer boeken</label>
             <input type="datetime-local" name="van" required>
         </div>
 
