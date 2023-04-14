@@ -24,7 +24,7 @@
     <div class="container">
 
         <table>
-
+    <h1>{{ $test }}</h1>
             <tr>
                 <th>Naam</td>
                 <th>Email</td>
@@ -58,6 +58,8 @@
             </tr>
 
             @endforeach
+
+
 
         </table>
     </div>

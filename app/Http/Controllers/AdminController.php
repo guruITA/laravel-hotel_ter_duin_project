@@ -11,6 +11,14 @@ class AdminController extends Controller
     public function register(Request $req)
     {
 
+        $existingUser = DB::table('registreren-medewerker')
+            ->where('username_medewerker', $req->username_medewerker)
+            ->first();
+
+        if ($existingUser) {
+            return redirect()->back()->with('error', 'A user with the same username already exists.');
+        }
+
         DB::table('registreren-medewerker')
             ->insert(['username_medewerker' => $req->input('username_medewerker'), 'password_medewerker' => password_hash($req->input('password_medewerker'), PASSWORD_DEFAULT)]);
         return redirect('/login');
@@ -28,15 +36,20 @@ class AdminController extends Controller
 
             if (password_verify($req->password_medewerker, $login->password_medewerker)) {
                 session(['username' => $req->username_medewerker]);
-                if(!$req->session()->has('username')) {
+                if (!$req->session()->has('username')) {
                     return redirect('/login');
                 }
-                return redirect('/admin');
+                
+                $logins = DB::table('registreren-medewerker')
+                ->select(['id_medewerker', 'username_medewerker', 'password_medewerker'])
+                ->where(['username_medewerker' => $req->username_medewerker])->get();  
+
+                return redirect('/admin?id_medewerker='. $logins->id_medewerker);
             }
         }
 
         $error = 'Username or password is incorrect.';
-        
+
         return view('/Admin/login', ['error' => $error]);
     }
 
@@ -44,7 +57,7 @@ class AdminController extends Controller
     {
         $request->session()->forget('username');
         $request->session()->regenerate();
-    
+
         return redirect('/login')->with('success', 'You have been logged out.');
     }
 
@@ -52,37 +65,39 @@ class AdminController extends Controller
     public function forgotPassword(Request $request)
     {
 
-            $username_medewerker = $request->input('username_medewerker');
-    
-            $user = DB::table('registreren-medewerker')
-                    ->where('username_medewerker', $username_medewerker)
-                    ->first();
-    
-            if ($user) {
-                $password_medewerker = $request->input('password_medewerker');
-    
-                DB::table('registreren-medewerker')
-                    ->where('username_medewerker', $username_medewerker)
-                    ->update(['password_medewerker' => password_hash($password_medewerker, PASSWORD_DEFAULT)]);
-    
-                return redirect('/admin')->with('success', 'Your new password has been set.');
-            } else {
-                return redirect()->back()->with('error', 'Invalid username.');
-            }
+        $username_medewerker = $request->input('username_medewerker');
+
+        $user = DB::table('registreren-medewerker')
+            ->where('username_medewerker', $username_medewerker)
+            ->first();
+
+        if ($user) {
+            $password_medewerker = $request->input('password_medewerker');
+
+            DB::table('registreren-medewerker')
+                ->where('username_medewerker', $username_medewerker)
+                ->update(['password_medewerker' => password_hash($password_medewerker, PASSWORD_DEFAULT)]);
+
+            return redirect('/admin')->with('success', 'Your new password has been set.');
+        } else {
+            return redirect()->back()->with('error', 'Invalid username.');
+        }
     }
 
-    public function admin(Request $request)
+    public function admin(Request $req)
     {
-    
-        if(!$request->session()->has('username')) {
+
+        $test = $req->id_medewerker;
+
+        if (!$req->session()->has('username')) {
             return redirect('');
         }
-    
+
         $bestelling_klant = DB::table('reservering')
             ->join('kamer', 'reservering.kamer', '=', 'kamer.id_kamer')
             ->join('klanten', 'reservering.klant', '=', 'klanten.id_klant')
             ->get();
-        return view('/Admin/adminHotel_ter_duin', ['bestelling_klant' => $bestelling_klant]);
+        return view('/Admin/adminHotel_ter_duin', ['bestelling_klant' => $bestelling_klant, 'test' => $test]);
     }
 
     public function ShowBestelling($id_bestelling)
