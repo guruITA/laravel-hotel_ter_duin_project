@@ -28,7 +28,7 @@ class AdminController extends Controller
     {
 
         $logins = DB::table('registreren-medewerker')
-            ->select(['username_medewerker', 'password_medewerker'])
+            ->select(['id_medewerker' ,'username_medewerker', 'password_medewerker'])
             ->where(['username_medewerker' => $req->username_medewerker])
             ->get();
 
@@ -39,12 +39,12 @@ class AdminController extends Controller
                 if (!$req->session()->has('username')) {
                     return redirect('/login');
                 }
-                
+
                 $logins = DB::table('registreren-medewerker')
                 ->select(['id_medewerker', 'username_medewerker', 'password_medewerker'])
-                ->where(['username_medewerker' => $req->username_medewerker])->get();  
+                ->where(['username_medewerker' => $req->username_medewerker])->value('id_medewerker');  
 
-                return redirect('/admin?id_medewerker='. $logins->id_medewerker);
+                return redirect('/admin?id_medewerker='. $logins);
             }
         }
 
