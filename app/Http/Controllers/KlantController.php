@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
+use DateTimeZone;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -26,7 +28,7 @@ class KlantController extends Controller
             }
         }
 
-        
+
         return view('/klant/selectDate');
     }
 
@@ -64,8 +66,11 @@ class KlantController extends Controller
     {
 
         $id_kamer = $req->id_kamer;
-        $van = date('Y-m-d H:i:s', strtotime($req->van));
-        $tot = date('Y-m-d H:i:s', strtotime($req->tot));
+        $van = $req->van;
+        $tot = $req->tot;
+
+        // $van = date('Y-m-d H:i:s', strtotime($req->van));
+        // $tot = date('Y-m-d H:i:s', strtotime($req->tot));
 
         // Check if there are any existing reservations for the same room during the same time period
         $existingReservation = DB::table('reservering')
@@ -97,7 +102,7 @@ class KlantController extends Controller
         $res_nr = DB::table('reservering')
             ->insertGetId(['klant' => $klant_id, 'van' => $van, 'tot' => $tot, 'kamer' => $id_kamer]);
 
-        return redirect('/klant/factuur?res_nr=' . $res_nr . '&klant_id=' . $klant_id . '&van=' . $van . '&tot=' . $tot . '&id_kamer=' . $id_kamer);
+        return redirect('/klant/factuur?res_nr=' . $res_nr . '&klant_id=' . $klant_id . '&van=' . $van . '&tot=' . $tot . '&id_kamer=' . $id_kamer . '&naam=' . $req->naam . "&email=" . $req->email . "&telefoon_nr=" . $req->telefoon_nr);
     }
 
     public function factuur(Request $req)
@@ -107,15 +112,20 @@ class KlantController extends Controller
         $van = $req->van;
         $tot = $req->tot;
         $id_kamer = $req->id_kamer;
+        $naam = $req->naam;
+        $email = $req->email;
+        $telefoon_nr = $req->telefoon_nr;
 
-        return view('/klant/factuur', ['res_nr' => $res_nr, 'klant_id' => $klant_id, 'van' => $van, 'tot' => $tot, 'id_kamer' => $id_kamer]);
-    }   
+        $timezone = new DateTimeZone('UTC');
+
+        $firstDate = new DateTime($van, $timezone);
+        $secondDate = new DateTime($tot, $timezone);
+        $difference = $secondDate->diff($firstDate)->days;
+
+        $prijs = DB::table('kamer')->where('id_kamer', $id_kamer)->value('prijs');
+
+        $totaal_prijs = $prijs * $difference;
+
+        return view('/klant/factuur', ['res_nr' => $res_nr, 'klant_id' => $klant_id, 'van' => $van, 'tot' => $tot, 'id_kamer' => $id_kamer, 'naam' => $naam, 'email' => $email, 'telefoon_nr' => $telefoon_nr, 'totaal_prijs' => $totaal_prijs]);
+    }
 }
-
-// $prijs = DB::table('kamers')
-//             ->where('kamernummer', '=', $kamernummer)
-//             ->pluck('prijs')
-//             ->first();
-// $totaal_prijs = $prijs * $difference;
-
-// $totaal_prijs = DB::table('kamers')->where('kamernummer', $kamernummer)->value('prijs') * $difference;

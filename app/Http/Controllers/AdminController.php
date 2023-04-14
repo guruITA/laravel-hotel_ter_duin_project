@@ -10,7 +10,6 @@ class AdminController extends Controller
 
     public function register(Request $req)
     {
-
         $existingUser = DB::table('registreren-medewerker')
             ->where('username_medewerker', $req->username_medewerker)
             ->first();
@@ -40,11 +39,7 @@ class AdminController extends Controller
                     return redirect('/login');
                 }
 
-                $logins = DB::table('registreren-medewerker')
-                ->select(['id_medewerker', 'username_medewerker', 'password_medewerker'])
-                ->where(['username_medewerker' => $req->username_medewerker])->value('id_medewerker');  
-
-                return redirect('/admin?id_medewerker='. $logins);
+                return redirect('/admin?id_medewerker='. $login->id_medewerker);
             }
         }
 
