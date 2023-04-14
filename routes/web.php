@@ -24,10 +24,13 @@ use Illuminate\Support\Facades\Route;
     //registeren
     Route::view('/register', '/Admin/registreren');
     Route::post('/admin/register/submit', [AdminController::class,'register']);
+    
+    Route::view('forgot-password', '/admin/forgot-password');
+    Route::post('forgot-password/submit', [AdminController::class, 'forgotPassword']);
 
     //admin main
     Route::group(['middleware' => ['checkLogin']], function () {
-        Route::get('/admin', [AdminController::class,'admin'])->name('admin');
+        Route::get('/admin', [AdminController::class,'admin']);
         // other admin routes
     });
 

@@ -48,11 +48,34 @@ class AdminController extends Controller
         return redirect('/login')->with('success', 'You have been logged out.');
     }
 
+
+    public function forgotPassword(Request $request)
+    {
+
+            $username_medewerker = $request->input('username_medewerker');
+    
+            $user = DB::table('registreren-medewerker')
+                    ->where('username_medewerker', $username_medewerker)
+                    ->first();
+    
+            if ($user) {
+                $password_medewerker = $request->input('password_medewerker');
+    
+                DB::table('registreren-medewerker')
+                    ->where('username_medewerker', $username_medewerker)
+                    ->update(['password_medewerker' => password_hash($password_medewerker, PASSWORD_DEFAULT)]);
+    
+                return redirect('/admin')->with('success', 'Your new password has been set.');
+            } else {
+                return redirect()->back()->with('error', 'Invalid username.');
+            }
+    }
+
     public function admin(Request $request)
     {
     
         if(!$request->session()->has('username')) {
-            return redirect('/login');
+            return redirect('');
         }
     
         $bestelling_klant = DB::table('reservering')
