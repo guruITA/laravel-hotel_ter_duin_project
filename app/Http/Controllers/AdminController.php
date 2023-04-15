@@ -82,7 +82,7 @@ class AdminController extends Controller
     public function admin(Request $req)
     {
 
-        $test = $req->id_medewerker;
+        $id_medewerker = $req->id_medewerker;
 
         if (!$req->session()->has('username')) {
             return redirect('');
@@ -92,7 +92,7 @@ class AdminController extends Controller
             ->join('kamer', 'reservering.kamer', '=', 'kamer.id_kamer')
             ->join('klanten', 'reservering.klant', '=', 'klanten.id_klant')
             ->get();
-        return view('/Admin/adminHotel_ter_duin', ['bestelling_klant' => $bestelling_klant, 'test' => $test]);
+        return view('/Admin/adminHotel_ter_duin', ['bestelling_klant' => $bestelling_klant, 'id_medewerker' => $id_medewerker]);
     }
 
     public function ShowBestelling($id_bestelling)
