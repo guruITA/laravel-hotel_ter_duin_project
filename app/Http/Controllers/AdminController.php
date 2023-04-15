@@ -85,7 +85,7 @@ class AdminController extends Controller
         $id_medewerker = $req->id_medewerker;
 
         if (!$req->session()->has('username')) {
-            return redirect('');
+            return redirect('/login');
         }
 
         $bestelling_klant = DB::table('reservering')
@@ -136,8 +136,20 @@ class AdminController extends Controller
 
     public function insertKamer(Request $req)
     {
+
+        //alles wordt opgeslagen in public->uploads en path wordt ook gestuurd naar database 
+        $fileName = time().'.'.$req->foto->extension();  
+        $path = '/uploads/' . $fileName;
+        $req->foto->move(public_path('uploads'), $fileName);
+        
         DB::table('kamer')
-            ->insert(['soort_kamer' => $req->soortKamer, 'omschrijving_kamer' => $req->omschrijving_kamer, 'prijs' => $req->prijs]);
+            ->insert([
+                'soort_kamer' => $req->soortKamer,
+                'kamer_foto' => $path,
+                'omschrijving_kamer' => $req->omschrijving_kamer,
+                'prijs' => $req->prijs
+            ]);
+    
         return redirect('/admin/insertKamer');
     }
 
