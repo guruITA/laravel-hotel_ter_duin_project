@@ -24,7 +24,6 @@
     <div class="container">
 
         <table>
-    <h1>{{ $test }}</h1>
             <tr>
                 <th>Naam</td>
                 <th>Email</td>
@@ -50,7 +49,9 @@
                 <td>{{$bestelling_klant->soort_kamer}}</td>
                 <td>{{$bestelling_klant->omschrijving_kamer}}</td>
                 <td>{{$bestelling_klant->prijs}}</td>
-                <td><a href="{{"/admin/show/".$bestelling_klant->id_bestelling}}">Zichtbaar</a></td>
+
+                <!--test om id te laten zien in url -->
+                <td><a href="{{"/admin/show/".$bestelling_klant->id_bestelling . "?id_medewerker=$id_medewerker"}}">Zichtbaar</a></td>
                 <td><a href="{{"/admin/update/".$bestelling_klant->id_bestelling}}">Wijzigen</a></td>
                 <td><a href="{{"/admin/delete/".$bestelling_klant->id_bestelling}}">Verwijderen</a></td>
 

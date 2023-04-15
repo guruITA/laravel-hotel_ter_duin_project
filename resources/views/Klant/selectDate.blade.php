@@ -16,15 +16,15 @@
         @csrf
 
         <div>
-            <label for="van">Welke datum en tijd wilt u de kamer boeken</label>
-            <input type="datetime-local" name="van" required>
+            <label for="van">Van welke datum en tijd wilt u de kamer boeken</label>
+            <input type="datetime-local" name="van" min="{{ date('Y-m-d\TH:i') }}" required>
         </div>
 
         <br>
 
         <div>
         <label for="van">Tot welke datum en tij wilt u de kamer boeken</label>
-            <input type="datetime-local" name="tot" required>
+            <input type="datetime-local" name="tot" min="{{ date('Y-m-d\TH:i') }}" required>
         </div>
         
         <br>
