@@ -23,7 +23,7 @@
     <br>
 
     <div class="container">
-        <form action="/admin/insertKamer/submit" method="POST">
+        <form action="/admin/insertKamer/submit" method="post" enctype="multipart/form-data">
 
             @csrf
 
@@ -36,10 +36,16 @@
             </div>
             <br>
             <div>
+            <input type="file" name="foto" required>
+            </div>
+            <br>
+            <div>
                 <input type="text" name="prijs" placeholder="Prijs" required>
             </div>
             <br>
             <button type="submit">Kamer toevoegen</button>
+
+            <img src="" alt="">
 
         </form>
 
@@ -54,6 +60,7 @@
             <tr>
                 <th>Kamer nr</th>
                 <th>Soort kamer</td>
+                <th>Fotos</th>
                 <th>Prijs</th>
                 <th>Omschrijving Kamer</td>
                 <th></th>
@@ -61,19 +68,19 @@
                 <th></th>
             </tr>
 
-            @foreach($kamers as $kamers)
+@foreach($kamers as $kamer)
+    <tr>
+        <td>{{ $kamer->id_kamer }}</td>
+        <td>{{ $kamer->soort_kamer }}</td>
+        <td><img src="{{ asset($kamer->kamer_foto) }}" alt=""></td>
+        <td>€{{ $kamer->prijs }}</td>
+        <td>{{ $kamer->omschrijving_kamer }}</td>
+        <td><a href="{{"/admin/insertKamer/show/".$kamer->id_kamer}}">Zichtbaar</a></td>
+        <td><a href="{{"/admin/insertKamer/update/".$kamer->id_kamer}}">Wijzigen</a></td>
+        <td><a href="{{"/admin/insertKamer/delete/".$kamer->id_kamer}}">Verwijderen</a></td>
+    </tr>
+@endforeach
 
-            <tr>
-                <td>{{$kamers->id_kamer}}</td>
-                <td>{{$kamers->soort_kamer}}</td>
-                <td>€{{$kamers->prijs}}</td>
-                <td>{{$kamers->omschrijving_kamer}}</td>
-                <td><a href="{{"/admin/insertKamer/show/".$kamers->id_kamer}}">Zichtbaar</a></td>
-                <td><a href="{{"/admin/insertKamer/update/".$kamers->id_kamer}}">Wijzigen</a></td>
-                <td><a href="{{"/admin/insertKamer/delete/".$kamers->id_kamer}}">Verwijderen</a></td>
-            </tr>
-
-            @endforeach
 
         </table>
 
