@@ -27,7 +27,6 @@ class AdminController extends Controller
     {
 
         $logins = DB::table('registreren-medewerker')
-            ->select(['id_medewerker' ,'username_medewerker', 'password_medewerker'])
             ->where(['username_medewerker' => $req->username_medewerker])
             ->get();
 
@@ -39,7 +38,7 @@ class AdminController extends Controller
                     return redirect('/login');
                 }
 
-                return redirect('/admin?id_medewerker='. $login->id_medewerker);
+                return redirect('/admin?id_medewerker=' . $login->id_medewerker);
             }
         }
 
@@ -138,10 +137,10 @@ class AdminController extends Controller
     {
 
         //alles wordt opgeslagen in public->uploads en path wordt ook gestuurd naar database 
-        $fileName = time().'.'.$req->foto->extension();  
+        $fileName = time() . '.' . $req->foto->extension();
         $path = '/uploads/' . $fileName;
         $req->foto->move(public_path('uploads'), $fileName);
-        
+
         DB::table('kamer')
             ->insert([
                 'soort_kamer' => $req->soortKamer,
@@ -149,7 +148,7 @@ class AdminController extends Controller
                 'omschrijving_kamer' => $req->omschrijving_kamer,
                 'prijs' => $req->prijs
             ]);
-    
+
         return redirect('/admin/insertKamer');
     }
 
@@ -178,9 +177,24 @@ class AdminController extends Controller
 
     public function updateKamer(Request $req)
     {
+
+        if (!$req->foto) {
+
+            //is de al opgeslagen image file in folder uploads/[image] in database die wordt gestuurd in database in functie insert kamer
+            $path = $req->current_file;
+
+        } else {
+
+            //als je de image file wilt updaten die is opgeslagen in database selecteeur je path en stuur je naar database 
+            $fileName = time() . '.' . $req->foto->extension();
+            $path = '/uploads/' . $fileName;
+            $req->foto->move(public_path('uploads'), $fileName);
+
+        }
+
         DB::table('kamer')
             ->where(['id_kamer' => $req->id_kamer])
-            ->update(['soort_kamer' => $req->soort_kamer, 'omschrijving_kamer' => $req->omschrijving_kamer]);
+            ->update(['soort_kamer' => $req->soort_kamer, 'kamer_foto' => $path, 'omschrijving_kamer' => $req->omschrijving_kamer]);
         return redirect('/admin/insertKamer');
     }
 

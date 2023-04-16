@@ -23,7 +23,7 @@
     <br>
 
     <div class="container">
-        <form action="/admin/insertKamer/update/submit" method="post">
+        <form action="/admin/insertKamer/update/submit" method="post" enctype="multipart/form-data">
 
         @csrf
 
@@ -31,6 +31,14 @@
         <input type="hidden" name="id_kamer" value="{{$show_kamer->id_kamer}}" >
             <div>
                 <input type="text" name="soort_kamer" placeholder="Soort Kamer" value="{{$show_kamer->soort_kamer}}" required>
+            </div>
+            <br>
+            <div>
+            <!-- als je foto wilt updaten -->
+            <input type="file" name="foto" value="{{ asset($show_kamer->kamer_foto) }}">
+            <br>
+            <!-- foto die al opgeslage is in database -->
+            <img src="{{ asset($show_kamer->kamer_foto) }}" alt="">
             </div>
             <br>
             <div>
