@@ -31,6 +31,7 @@
                 <th>Datum en tijd van</th>
                 <th>Datum en tijd tot</th>
                 <th>Kamer</th>
+                <th>Fotos</th>
                 <th>Omschrijving</th>
                 <th>Prijs</th>
                 <th></th>
@@ -47,6 +48,7 @@
                 <td>{{$bestelling_klant->van}}</td>
                 <td>{{$bestelling_klant->tot}}</td>
                 <td>{{$bestelling_klant->soort_kamer}}</td>
+                <td><img src="{{ asset($bestelling_klant->kamer_foto) }}" alt=""></td>
                 <td>{{$bestelling_klant->omschrijving_kamer}}</td>
                 <td>{{$bestelling_klant->prijs}}</td>
 
