@@ -22,6 +22,8 @@
     <h1 name="id_kamer">Naam: {{ $naam }}</h1>
     <h1 name="id_kamer">Email: {{ $email }}</h1>
     <h1 name="id_kamer">Telefoon:{{ $telefoon_nr }}</h1>
+    <h1>{{ $kamer->soort_kamer }}</h1>
+    <img src="{{ asset($kamer->kamer_foto) }}" alt="">
     <h1 name="id_kamer">Totaal bedrag: {{ $totaal_prijs }}</h1>
 
     <button class="btn btn-primary" onclick="window.print()"> Print deze pagina</button>

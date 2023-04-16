@@ -122,10 +122,11 @@ class KlantController extends Controller
         $secondDate = new DateTime($tot, $timezone);
         $difference = $secondDate->diff($firstDate)->days;
 
-        $prijs = DB::table('kamer')->where('id_kamer', $id_kamer)->value('prijs');
+        $kamers = DB::table('kamer')->where('id_kamer', $id_kamer)->get();
 
-        $totaal_prijs = $prijs * $difference;
+        foreach($kamers as $kamer)
+        $totaal_prijs = $kamer->prijs * $difference;
 
-        return view('/klant/factuur', ['res_nr' => $res_nr, 'klant_id' => $klant_id, 'van' => $van, 'tot' => $tot, 'id_kamer' => $id_kamer, 'naam' => $naam, 'email' => $email, 'telefoon_nr' => $telefoon_nr, 'totaal_prijs' => $totaal_prijs]);
+        return view('/klant/factuur', ['res_nr' => $res_nr, 'klant_id' => $klant_id, 'van' => $van, 'tot' => $tot, 'id_kamer' => $id_kamer, 'naam' => $naam, 'email' => $email, 'telefoon_nr' => $telefoon_nr, 'kamer' => $kamer, 'totaal_prijs' => $totaal_prijs]);
     }
 }
