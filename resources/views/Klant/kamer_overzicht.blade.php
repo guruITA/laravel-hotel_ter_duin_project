@@ -23,6 +23,7 @@
         <tr>
             <td>{{ $show_kamer->id_kamer }}</td>
             <td>{{ $show_kamer->soort_kamer }}</td>
+            <td><img src="{{ asset($show_kamer->kamer_foto) }}" alt=""></td>
             <td>{{ $show_kamer->omschrijving_kamer }}</td>
             <td>€ {{ $show_kamer->prijs }}</td>
             <td><a href="{{"/klant/insertBestelling?id_kamer=" . $show_kamer->id_kamer . "&van=" . $van . "&tot=" . $tot}}">Kamer bestellen</a></td>
