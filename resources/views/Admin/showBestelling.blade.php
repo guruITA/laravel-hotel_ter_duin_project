@@ -18,6 +18,7 @@
         <h3>{{$bestelling_klant->van}}</h3>
         <h3>{{$bestelling_klant->tot}}</h3>
         <h3>{{$bestelling_klant->soort_kamer}}</h3>
+        <td><img src="{{ asset($bestelling_klant->kamer_foto) }}" alt=""></td>
         <h3>{{$bestelling_klant->omschrijving_kamer}}</h3>
         <h3>{{$bestelling_klant->prijs}}</h3>
     </div>
