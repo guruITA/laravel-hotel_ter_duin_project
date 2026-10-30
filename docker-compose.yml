@@ -1,0 +1,40 @@
+name: hotel-ter-duin
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        UID: ${HOST_UID:-1000}
+    image: hotel-ter-duin-app
+    container_name: hotel-ter-duin-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mariadb:10.11
+    container_name: hotel-ter-duin-db
+    environment:
+      # local development only
+      MARIADB_DATABASE: hotel_ter_duin
+      MARIADB_USER: hotel
+      MARIADB_PASSWORD: hotel
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/mysql
+      # loaded once, when the db-data volume is still empty
+      - ./database/hotel-ter-duin.sql:/docker-entrypoint-initdb.d/hotel-ter-duin.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  db-data:

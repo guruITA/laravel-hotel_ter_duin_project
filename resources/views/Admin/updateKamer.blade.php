@@ -29,6 +29,7 @@
 
         @foreach($show_kamer as $show_kamer)
         <input type="hidden" name="id_kamer" value="{{$show_kamer->id_kamer}}" >
+        <input type="hidden" name="current_file" value="{{$show_kamer->kamer_foto}}" >
             <div>
                 <input type="text" name="soort_kamer" placeholder="Soort Kamer" value="{{$show_kamer->soort_kamer}}" required>
             </div>
