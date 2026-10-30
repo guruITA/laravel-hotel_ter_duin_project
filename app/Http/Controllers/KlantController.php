@@ -23,13 +23,13 @@ class KlantController extends Controller
             } else {
 
                 $error = "Selecteer de juiste datum";
-                return view('/klant/selectDate', ['error' => $error]);
+                return view('/Klant/selectDate', ['error' => $error]);
                 exit();
             }
         }
 
 
-        return view('/klant/selectDate');
+        return view('/Klant/selectDate');
     }
 
     public function show_kamers(Request $req)
@@ -37,9 +37,6 @@ class KlantController extends Controller
 
         $van = $req->van;
         $tot = $req->tot;
-
-        echo $van;
-        echo $tot;
 
         $show_kamers = DB::table('kamer')
             ->whereNotIn('id_kamer', function ($query) use ($van, $tot) {
@@ -50,7 +47,7 @@ class KlantController extends Controller
             })
             ->get();
 
-        return view('/klant/kamer_overzicht', ['show_kamers' => $show_kamers, 'van' => $van, 'tot' => $tot]);
+        return view('/Klant/kamer_overzicht', ['show_kamers' => $show_kamers, 'van' => $van, 'tot' => $tot]);
     }
 
     public function showInsertForm(Request $req)
@@ -59,7 +56,7 @@ class KlantController extends Controller
         $van = $req->van;
         $tot = $req->tot;
 
-        return view('klant/insertBestelling', ['id_kamer' => $id_kamer, 'van' => $van, 'tot' => $tot]);
+        return view('Klant/insertBestelling', ['id_kamer' => $id_kamer, 'van' => $van, 'tot' => $tot]);
     }
 
     public function insertKlant(Request $req)
@@ -124,9 +121,13 @@ class KlantController extends Controller
 
         $kamers = DB::table('kamer')->where('id_kamer', $id_kamer)->get();
 
+        // geen kamer gevonden, bijvoorbeeld als de kamer al gereserveerd is
+        $kamer = null;
+        $totaal_prijs = 0;
+
         foreach($kamers as $kamer)
         $totaal_prijs = $kamer->prijs * $difference;
 
-        return view('/klant/factuur', ['res_nr' => $res_nr, 'klant_id' => $klant_id, 'van' => $van, 'tot' => $tot, 'id_kamer' => $id_kamer, 'naam' => $naam, 'email' => $email, 'telefoon_nr' => $telefoon_nr, 'kamer' => $kamer, 'totaal_prijs' => $totaal_prijs]);
+        return view('/Klant/factuur', ['res_nr' => $res_nr, 'klant_id' => $klant_id, 'van' => $van, 'tot' => $tot, 'id_kamer' => $id_kamer, 'naam' => $naam, 'email' => $email, 'telefoon_nr' => $telefoon_nr, 'kamer' => $kamer, 'totaal_prijs' => $totaal_prijs]);
     }
 }

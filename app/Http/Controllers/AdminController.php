@@ -204,6 +204,7 @@ class AdminController extends Controller
     {
         $referenced_by = DB::table('reservering')
             ->join('kamer', 'reservering.kamer', '=', 'kamer.id_kamer')
+            ->join('klanten', 'reservering.klant', '=', 'klanten.id_klant')
             ->where(['kamer' => $id_kamer])
             ->get();
 
@@ -212,7 +213,7 @@ class AdminController extends Controller
             foreach ($referenced_by as $record)
 
                 $error_msg = "Kan kamer $id_kamer $record->soort_kamer niet verwijderen.";
-            $error_msg .= 'Bestelling ID ' . $record->id_bestelling . ' bij klant ' . $record->naam_klant;
+            $error_msg .= 'Bestelling ID ' . $record->id_bestelling . ' bij klant ' . $record->naam;
 
             return redirect('/admin/insertKamer')->with('error', $error_msg);
         } else {

@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// gasten beginnen bij het kiezen van een datum
+Route::redirect('/', '/klant/selectDate');
 
     // inloggen
-    Route::view('/login', '/admin/login')->name('login');
+    Route::view('/login', '/Admin/login')->name('login');
     Route::post('/login/submit', [AdminController::class,'login']);
     Route::get('/logout', [AdminController::class,'logout']);
 
@@ -25,7 +27,7 @@ use Illuminate\Support\Facades\Route;
     Route::view('/register', '/Admin/registreren');
     Route::post('/admin/register/submit', [AdminController::class,'register']);
     
-    Route::view('forgot-password', '/admin/forgot-password');
+    Route::view('forgot-password', '/Admin/forgot-password');
     Route::post('forgot-password/submit', [AdminController::class, 'forgotPassword']);
 
     //admin main
@@ -63,7 +65,7 @@ Route::get('/klant/selectDate', [KlantController::class,'selectDate']);
 
 Route::get('/klant/kamer_overzicht', [KlantController::class,'show_kamers']);
 
-Route::get('/klant/insertBestelling ', [KlantController::class,'showInsertForm']);
+Route::get('/klant/insertBestelling', [KlantController::class,'showInsertForm']);
 Route::post('/klant/insertBestelling/submit', [KlantController::class,'insertKlant']);
 
 Route::get('/klant/factuur', [KlantController::class,'factuur']);

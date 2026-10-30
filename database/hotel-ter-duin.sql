@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `kamer` (
   `id_kamer` int(11) NOT NULL,
   `soort_kamer` varchar(20) NOT NULL,
+  `kamer_foto` varchar(255) DEFAULT NULL,
   `omschrijving_kamer` text NOT NULL,
   `prijs` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -38,10 +39,10 @@ CREATE TABLE `kamer` (
 -- Gegevens worden geëxporteerd voor tabel `kamer`
 --
 
-INSERT INTO `kamer` (`id_kamer`, `soort_kamer`, `omschrijving_kamer`, `prijs`) VALUES
-(1, 'Queen size', 'grote kamer', '100'),
-(2, 'Twee personen', 'Voor 2 personen', '50'),
-(3, 'bbbb', 'ww', '10000');
+INSERT INTO `kamer` (`id_kamer`, `soort_kamer`, `kamer_foto`, `omschrijving_kamer`, `prijs`) VALUES
+(1, 'Queen size', '/uploads/1681567938.jpg', 'grote kamer', '100'),
+(2, 'Twee personen', '/uploads/1681568001.jpg', 'Voor 2 personen', '50'),
+(3, 'bbbb', '/uploads/1681568263.jpg', 'ww', '10000');
 
 -- --------------------------------------------------------
 
@@ -132,7 +133,8 @@ CREATE TABLE `registreren-medewerker` (
 
 INSERT INTO `registreren-medewerker` (`id_medewerker`, `username_medewerker`, `password_medewerker`) VALUES
 (1, 'Gurpreet', '$2y$10$6fifbqXOme2WbNqLTwARKeY85uVkeRMI1MoyjJde9I0cd3PuguARa'),
-(2, 'Gurpreet1', '$2y$10$w1bY60b77WW6cohpFLGRZecwdQX0iOhHYfRnR0VGfCQUvKhTgHm7C');
+(2, 'Gurpreet1', '$2y$10$w1bY60b77WW6cohpFLGRZecwdQX0iOhHYfRnR0VGfCQUvKhTgHm7C'),
+(3, 'admin', '$2y$10$ifzMTBmrK9Mp58Bj3VrVQ.OTe5WzZYGmKPsK5kXeLyZWIoi8yaXAa');
 
 -- --------------------------------------------------------
 
@@ -207,7 +209,7 @@ ALTER TABLE `klanten`
 -- AUTO_INCREMENT voor een tabel `registreren-medewerker`
 --
 ALTER TABLE `registreren-medewerker`
-  MODIFY `id_medewerker` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_medewerker` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT voor een tabel `reservering`
